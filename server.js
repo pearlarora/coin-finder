@@ -10,7 +10,12 @@ import uploadMiddleware from "./src/middlewares/fileupload.middleware.js";
 dotenv.config();
 
 const server = express();
-server.use(cors());
+server.use(cors(
+  {
+    origin: ["https://coin-finder-client.vercel.app/"],
+    methods: ["POST", "GET"],
+  }
+));
 server.use(bodyParser.json());
 server.use(
   helmet({
