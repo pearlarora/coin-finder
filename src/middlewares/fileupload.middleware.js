@@ -10,18 +10,9 @@ const storage = multer.diskStorage({
     // );
     // cb(null, destinationPath);
     // console.log("upload middleware");
-    const destinationPath = path.join(
-      __dirname,
-      "../../client/src/Assets/coinIcons"
-    );
-
-    // Create the directory if it doesn't exist
-    fs.mkdir(destinationPath, { recursive: true }, (err) => {
-      if (err) {
-        console.error("Error creating directory:", err);
-      }
-      cb(null, destinationPath);
-    });
+    const uploadPath = "../client/src/Assets/coinIcons";
+    console.log("Uploading path: " + uploadPath);
+    cb(null, uploadPath);
     // cb(null, "../client/src/Assets/coinIcons");
     // console.log("upload middleware");
     // const uploadPath = path.join(
