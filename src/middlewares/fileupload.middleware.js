@@ -1,13 +1,14 @@
 import multer from "multer";
+import path from "path";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-     const destinationPath = path.join(
-       __dirname,
-       "../../client/src/Assets/coinIcons"
-     );
-     cb(null, destinationPath);
-     console.log("upload middleware");
+    const destinationPath = path.join(
+      __dirname,
+      "../../client/src/Assets/coinIcons/"
+    );
+    cb(null, destinationPath);
+    console.log("upload middleware");
     // cb(null, "../client/src/Assets/coinIcons");
     // console.log("upload middleware");
     // const uploadPath = path.join(
