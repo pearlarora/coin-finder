@@ -16,6 +16,7 @@ server.use(
     xFrameOptions: { action: "sameorigin" },
   })
 );
+server.use(express.static("client"));
 
 const coinController = new CoinController();
 
