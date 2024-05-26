@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
+import helmet from "helmet";
 import { connectUsingMongoose } from "./src/Config/mongooseConfig.js";
 import upload from "./src/middlewares/fileupload.middleware.js";
 import CoinController from "./src/features/coin/coin.controller.js";
@@ -10,6 +11,14 @@ dotenv.config();
 const server = express();
 server.use(cors());
 server.use(bodyParser.json());
+server.use(
+  helmet({
+    contentSecurityPolicy: false,
+    frameguard: {
+      action: "sameorigin",
+    },
+  })
+);
 
 const coinController = new CoinController();
 
