@@ -12,7 +12,11 @@ const storage = multer.diskStorage({
     // cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + file.originalname);
+    // cb(null, new Date().toISOString() + file.originalname);
+    const timestamp = new Date().getTime(); // Use timestamp for uniqueness
+    const extension = file.originalname.split(".").pop(); // Extract extension
+    const filename = `${timestamp}.${extension}`; // Combine timestamp and extension
+    cb(null, filename);
   },
 });
 
