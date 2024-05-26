@@ -13,10 +13,7 @@ server.use(cors());
 server.use(bodyParser.json());
 server.use(
   helmet({
-    contentSecurityPolicy: false,
-    frameguard: {
-      action: "sameorigin",
-    },
+    xFrameOptions: { action: "sameorigin" },
   })
 );
 
