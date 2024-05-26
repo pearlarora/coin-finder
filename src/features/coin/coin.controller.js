@@ -53,7 +53,7 @@ export default class CoinController {
   async addCoin(req, res) {
     try {
       const newCoin = req.body;
-      const logo = req.file ? req.file.filename : "";
+      const logo = req.file ? req.file.firebaseUrl : "";
       newCoin.logo = logo;
       const savedCoin = await this.coinRepository.add(newCoin);
       res.status(201).json(savedCoin);

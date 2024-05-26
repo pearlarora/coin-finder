@@ -6,6 +6,7 @@ import helmet from "helmet";
 import { connectUsingMongoose } from "./src/Config/mongooseConfig.js";
 import upload from "./src/middlewares/fileupload.middleware.js";
 import CoinController from "./src/features/coin/coin.controller.js";
+import uploadMiddleware from "./src/middlewares/fileupload.middleware.js";
 dotenv.config();
 
 const server = express();
@@ -20,9 +21,12 @@ server.use(
 
 const coinController = new CoinController();
 
-server.post("/", upload.single("logo"), (req, res) => {
+server.post("/", uploadMiddleware, (req, res) => {
   coinController.addCoin(req, res);
 });
+// server.post("/", upload.single("logo"), (req, res) => {
+//   coinController.addCoin(req, res);
+// });
 server.get("/coins", (req, res) => {
   coinController.getAllCoins(req, res);
 });
