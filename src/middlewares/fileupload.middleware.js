@@ -37,7 +37,7 @@
 import multer from "multer";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import storage from "../../client/src/Config/firebaseConfig.js";
+import storage from "../Config/firebaseConfig.js";
 
 // Configure Multer storage
 const storageConfig = multer.memoryStorage();
