@@ -10,22 +10,12 @@ import uploadMiddleware from "./src/middlewares/fileupload.middleware.js";
 dotenv.config();
 
 const server = express();
-// server.use(cors());
-const allowedOrigins = [
-  "https://www.coinfinder.cc",
-  "https://coin-finder.onrender.com",
-];
-server.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  })
-);
+server.use(cors(
+  {
+    origin: ["https://www.coinfinder.cc/"],
+    methods: ["POST", "GET"],
+  }
+));
 server.use(bodyParser.json());
 server.use(
   helmet({
