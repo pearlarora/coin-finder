@@ -67,7 +67,6 @@
 //   connectUsingMongoose();
 // });
 
-
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -81,7 +80,10 @@ dotenv.config();
 
 const server = express();
 
-const allowedOrigins = ["https://www.coinfinder.cc"];
+const allowedOrigins = [
+  "https://www.coinfinder.cc",
+  "https://coin-finder-client.vercel.app/",
+];
 
 server.use(
   cors({
