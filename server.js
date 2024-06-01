@@ -10,7 +10,22 @@ import uploadMiddleware from "./src/middlewares/fileupload.middleware.js";
 dotenv.config();
 
 const server = express();
-server.use(cors());
+// server.use(cors());
+const allowedOrigins = [
+  "https://www.coinfinder.cc",
+  "https://coin-finder.onrender.com",
+];
+server.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 server.use(bodyParser.json());
 server.use(
   helmet({
@@ -42,6 +57,7 @@ server.get("/coin/:id", (req, res) => {
   coinController.getCoinByID(req, res);
 });
 server.post("/review/:id", (req, res) => {
+  console.log(`Received POST request for review with ID: ${req.params.id}`);
   coinController.reviewAndAddCoin(req, res);
 });
 server.post("/promote/:id", (req, res) => {
