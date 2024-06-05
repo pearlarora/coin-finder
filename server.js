@@ -80,6 +80,8 @@ dotenv.config();
 
 const server = express();
 
+server.enable("trust proxy");
+
 const allowedOrigins = [
   "https://www.coinfinder.cc",
   "https://coin-finder-client.vercel.app/",

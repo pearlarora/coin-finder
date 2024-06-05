@@ -60,8 +60,8 @@ import mongoose from "mongoose";
 
 // Define a separate schema for votes
 const voteSchema = new mongoose.Schema({
-  count: { type: Number, default: 0 },
-  coinId: { type: mongoose.Schema.Types.ObjectId, ref: "CoinTable" },
+  ipAddress: { type: String, required: true },
+  timestamp: { type: Date, required: true },
 });
 
 const coinTableSchema = new mongoose.Schema({
@@ -122,6 +122,7 @@ const coinTableSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  voteHistory: { type: [voteSchema], default: [] },
   graph: {
     type: String,
     default: "",
