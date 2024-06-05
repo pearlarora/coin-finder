@@ -89,16 +89,13 @@ export default class CoinController {
   async toggleVote(req, res) {
     try {
       const coinId = req.params.id;
-      const ipAddress = req.ip; // Get user's IP address
+      // const ipAddress = req.ip; // Get user's IP address
 
-      const result = await this.coinRepository.toggleVote(coinId, ipAddress);
+      // const result = await this.coinRepository.toggleVote(coinId, ipAddress);
+      const result = await this.coinRepository.toggleVote(coinId);
       res.status(201).json({ message: result });
     } catch (error) {
-      if (error.message === "You can only vote once per hour") {
-        res.status(400).json({ message: error.message });
-      } else {
-        res.status(500).json({ message: "Failed to toggle vote" });
-      }
+      res.status(500).json({ message: "Failed to toggle vote" });
     }
   }
 }

@@ -122,7 +122,7 @@ const coinTableSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  voteHistory: { type: [voteSchema], default: [] },
+  // voteHistory: { type: [voteSchema], default: [] },
   graph: {
     type: String,
     default: "",
