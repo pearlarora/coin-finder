@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { CoinTableModel } from "../features/coin/coinTable.model.js";
 
 dotenv.config();
 const url = process.env.DB_URL;

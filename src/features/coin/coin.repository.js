@@ -274,27 +274,67 @@ export default class CoinRepository {
     }
   }
 
-  async toggleVote(coinId) {
-    try {
-      console.log(coinId);
-      // Correctly cast the coinId to an ObjectId
+  // async toggleVote(coinId, ipAddress) {
+  //   try {
+  //     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
-      const coin = await CoinTableModel.findOne({
-        _id: ObjectId.createFromHexString(coinId),
-      });
-      console.log(coin);
-      const promotedCoin = await PromotedCoinTableModel.findOne({
-        _id: ObjectId.createFromHexString(coinId),
-      });
-      console.log(promotedCoin);
-      if (coin) {
-        coin.vote += 1;
-        await coin.save();
+  //     const coin = await CoinTableModel.findOne({
+  //       _id: ObjectId.createFromHexString(coinId),
+  //     });
+  //     console.log(coin);
+  //     const promotedCoin = await PromotedCoinTableModel.findOne({
+  //       _id: ObjectId.createFromHexString(coinId),
+  //     });
+  //     console.log(promotedCoin);
+  //     if (coin) {
+  //       coin.vote += 1;
+  //       await coin.save();
+  //     }
+  //     if (promotedCoin) {
+  //       promotedCoin.vote += 1;
+  //       await promotedCoin.save();
+  //     }
+  //     return "Vote added successfully";
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error("Failed to toggle vote");
+  //   }
+  // }
+
+  async toggleVote(coinId, ipAddress) {
+    try {
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+
+      const coin = await CoinTableModel.findById(coinId);
+
+      if (!coin) {
+        throw new Error("Coin not found");
       }
+
+      // Check if the user has already voted within the last hour
+      const recentVote = coin.voteHistory.find(
+        (vote) => vote.ipAddress === ipAddress && vote.timestamp > oneHourAgo
+      );
+
+      if (recentVote) {
+        throw new Error("You can only vote once per hour");
+      }
+
+      // Add vote to the main coin table
+      coin.vote += 1;
+      coin.voteHistory.push({ ipAddress, timestamp: new Date() });
+      await coin.save();
+
+      // Check if the coin is also in the promoted coin table
+      const promotedCoin = await PromotedCoinTableModel.findById(coinId);
+
       if (promotedCoin) {
-        promotedCoin.vote += 1;
+        // Synchronize the vote count and history
+        promotedCoin.vote = coin.vote;
+        promotedCoin.voteHistory = coin.voteHistory;
         await promotedCoin.save();
       }
+
       return "Vote added successfully";
     } catch (error) {
       console.log(error);

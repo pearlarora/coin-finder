@@ -127,10 +127,6 @@ const coinTableSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  // vote: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Vote",
-  // },
 });
 
 // Define the schema for promoted coins with a reference to the voteSchema

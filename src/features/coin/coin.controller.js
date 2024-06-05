@@ -90,34 +90,15 @@ export default class CoinController {
     try {
       const coinId = req.params.id;
       const ipAddress = req.ip; // Get user's IP address
-      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
-      const coin = await CoinTableModel.findById(coinId);
-
-      if (!coin) {
-        return res.status(404).json({ message: "Coin not found" });
-      }
-
-      // Check if the user has already voted within the last hour
-      const recentVote = coin.voteHistory.find(
-        (vote) => vote.ipAddress === ipAddress && vote.timestamp > oneHourAgo
-      );
-
-      if (recentVote) {
-        return res
-          .status(400)
-          .json({ message: "You can only vote once per hour" });
-      }
-
-      // Add vote
-      coin.vote += 1;
-      coin.voteHistory.push({ ipAddress, timestamp: new Date() });
-      await coin.save();
-
-      res.status(201).json({ message: "Vote added successfully" });
+      const result = await this.coinRepository.toggleVote(coinId, ipAddress);
+      res.status(201).json({ message: result });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Failed to toggle vote" });
+      if (error.message === "You can only vote once per hour") {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: "Failed to toggle vote" });
+      }
     }
   }
 }
