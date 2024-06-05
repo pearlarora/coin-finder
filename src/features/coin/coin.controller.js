@@ -92,9 +92,7 @@ export default class CoinController {
       const ipAddress = req.ip; // Get user's IP address
       const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
-      const coin = await CoinTableModel.findOne({
-        _id: ObjectId.createFromHexString(coinId),
-      });
+      const coin = await CoinTableModel.findById(coinId);
 
       if (!coin) {
         return res.status(404).json({ message: "Coin not found" });
