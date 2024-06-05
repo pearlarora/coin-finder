@@ -1,4 +1,5 @@
 import CoinRepository from "./coin.repository.js";
+import { CoinTableModel } from "./coinTable.model.js";
 
 export default class CoinController {
   constructor() {
