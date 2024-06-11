@@ -22,19 +22,31 @@ const fetchDexscreenerData = async (query) => {
   }
 };
 
-const updateHours24ForAllCoins = async (query) => {
+const updateHours24ForAllCoins = async () => {
   try {
-    const data = await fetchDexscreenerData(query);
-    const priceChangeH24 = data.pairs[0].priceChange.h24;
+    // Fetch all coins from CoinTableModel
+    const coins = await CoinTableModel.find();
+    // Fetch all coins from PromotedCoinTableModel
+    const promotedCoins = await PromotedCoinTableModel.find();
 
-    // Update all coins in CoinTableModel
-    await CoinTableModel.updateMany({}, { $set: { hours24: priceChangeH24 } });
+    // Combine all coins into one array
+    const allCoins = [...coins, ...promotedCoins];
 
-    // Update all coins in PromotedCoinTableModel
-    await PromotedCoinTableModel.updateMany(
-      {},
-      { $set: { hours24: priceChangeH24 } }
-    );
+    for (const coin of allCoins) {
+      try {
+        const data = await fetchDexscreenerData(coin.address);
+        if (data.pairs && data.pairs.length > 0) {
+          const priceChangeH24 = data.pairs[0].priceChange.h24;
+          coin.hours24 = priceChangeH24;
+          await coin.save();
+        }
+      } catch (error) {
+        console.error(
+          `Failed to update hours24 for coin with address ${coin.address}:`,
+          error
+        );
+      }
+    }
 
     console.log("Successfully updated hours24 for all coins");
   } catch (error) {
