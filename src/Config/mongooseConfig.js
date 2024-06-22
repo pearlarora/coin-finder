@@ -38,8 +38,10 @@ const updateHours24ForAllCoins = async () => {
         if (data.pairs && data.pairs.length > 0) {
           const priceChangeH24 = data.pairs[0].priceChange.h24;
           coin.hours24 = priceChangeH24;
-          await coin.save();
+        } else {
+          coin.hours24 = "";
         }
+        await coin.save();
       } catch (error) {
         console.error(
           `Failed to update hours24 for coin with address ${coin.address}:`,
@@ -54,12 +56,25 @@ const updateHours24ForAllCoins = async () => {
   }
 };
 
+const updateVotes = async () => {
+  try {
+    await CoinTableModel.updateMany({}, { $inc: { vote: 23 } });
+    console.log("Updated votes in CoinTableModel");
+
+    await PromotedCoinTableModel.updateMany({}, { $inc: { vote: 23 } });
+    console.log("Updated votes in PromotedCoinTableModel");
+  } catch (error) {
+    console.error("Error updating votes for all coins:", error);
+  }
+};
+
 export const connectUsingMongoose = async () => {
   try {
     await mongoose.connect(url);
     console.log("Connected using Mongoose");
     // Call the migrate function here
     await updateHours24ForAllCoins("query");
+    await updateVotes();
   } catch (error) {
     console.log("Error connecting to DB");
     console.log(error);
