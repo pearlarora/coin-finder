@@ -223,10 +223,14 @@ export default class CoinRepository {
   async getCoinByQuery(query) {
     try {
       console.log("Query: ", query);
-      // const coin = await CoinTableModel.findOne({
-      //   $or: [{ name: query }, { symbol: query }, { address: query }],
-      // });
-      const coin = await CoinTableModel.findOne({ name: query });
+      const coin = await CoinTableModel.findOne({
+        $or: [
+          { name: { $regex: query, $options: "i" } },
+          { symbol: { $regex: query, $options: "i" } },
+          { address: { $regex: query, $options: "i" } },
+        ],
+      });
+      // const coin = await CoinTableModel.findOne({ name: query });
       console.log("Coin: ", coin);
       return coin;
     } catch (error) {
