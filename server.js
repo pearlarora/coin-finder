@@ -122,9 +122,9 @@ server.get("/promoted", (req, res) => {
   coinController.getAllPromotedCoins(req, res);
 });
 
-server.get("/search/:address", (req, res) => {
+server.get("/search/:searchQuery", (req, res) => {
   console.log("inside search address");
-  coinController.getCoinByAddress(req, res);
+  coinController.getCoinBySearchQuery(req, res);
 });
 
 server.get("/coin/:id", (req, res) => {

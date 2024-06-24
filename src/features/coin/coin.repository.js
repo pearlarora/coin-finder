@@ -220,6 +220,16 @@ export default class CoinRepository {
     }
   }
 
+  async getCoinByQuery(query) {
+    try {
+      const coin = await CoinTableModel.findOne({ query });
+      return coin;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get coin from the database");
+    }
+  }
+
   async add(newCoin) {
     try {
       const coin = new CoinModel(newCoin);

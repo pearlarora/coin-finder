@@ -40,14 +40,15 @@ export default class CoinController {
     }
   }
 
-  async getCoinByAddress(req, res) {
+  async getCoinBySearchQuery(req, res) {
     try {
-      const address = req.params.address;
-      const coin = await this.coinRepository.getCoinByAddress(address);
+      // const address = req.params.address;
+      const query = req.params.searchQuery;
+      const coin = await this.coinRepository.getCoinByQuery(query);
       res.status(200).json(coin);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Failed to get coin using Address" });
+      res.status(500).json({ message: "Failed to get coin using searchQuery" });
     }
   }
 
