@@ -84,15 +84,16 @@ server.enable("trust proxy");
 
 const allowedOrigins = [
   "https://www.coinfinder.cc",
-  "https://coin-finder-client.vercel.app/",
+  "https://coin-finder-client.vercel.app",
 ];
-
 server.use(
   cors({
     origin: function (origin, callback) {
+      console.log("Origin: ", origin); // Debugging log
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
+        console.error("Not allowed by CORS: ", origin); // Debugging log
         callback(new Error("Not allowed by CORS"));
       }
     },
@@ -100,6 +101,7 @@ server.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+server.options("*", cors()); 
 
 server.use(bodyParser.json());
 server.use(

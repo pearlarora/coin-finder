@@ -222,7 +222,9 @@ export default class CoinRepository {
 
   async getCoinByQuery(query) {
     try {
+      console.log("Query: ", query);
       const coin = await CoinTableModel.findOne({ query });
+      console.log("Coin: ", coin);
       return coin;
     } catch (error) {
       console.log(error);
