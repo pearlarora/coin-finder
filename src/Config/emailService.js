@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendEmail = async (to, subject, text) => {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: "coinfinderlisting@gmail.com",
     to,
     subject,
     text,

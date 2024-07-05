@@ -70,6 +70,7 @@ export default class CoinController {
     try {
       const coinId = req.params.id;
       const addedCoin = await this.coinRepository.reviewAndAdd(coinId);
+      console.log(addedCoin);
       await sendEmail(
         addedCoin.email,
         "CoinFinder: Coin Added to Table",
