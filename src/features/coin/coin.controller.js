@@ -74,9 +74,13 @@ export default class CoinController {
       await sendEmail(
         addedCoin.email,
         "CoinFinder: Coin Added to Table",
-        `Your coin has been successfully added to the table. Details: ${JSON.stringify(
-          addedCoin
-        )}`
+        `Congratulations! Your coin has been successfully added to the table. You can now access it on the website or by clicking the following link.
+        \nDetails: 
+        \nLink: https://www.coinfinder.cc/coin/${addedCoin.address}
+        \nName: ${addedCoin.name}
+         \nSymbol: ${addedCoin.symbol}
+          \nNetwork: ${addedCoin.network}
+           \nAddress: ${addedCoin.address}`
       );
       res.status(201).json(addedCoin);
     } catch (error) {
