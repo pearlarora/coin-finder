@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import axios from "axios";
-import fs from "fs";
-import cron from "node-cron";
 import {
   CoinTableModel,
   PromotedCoinTableModel,
