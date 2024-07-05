@@ -76,7 +76,7 @@ export default class CoinController {
         "CoinFinder: Coin Added to Table",
         `Congratulations! Your coin has been successfully added to the table. You can now access it on the website or by clicking the following link.
         \nDetails: 
-        \nLink: https://www.coinfinder.cc/coin/${addedCoin.address}
+        \nLink: https://www.coinfinder.cc/coin/${coinId}
         \nName: ${addedCoin.name}
          \nSymbol: ${addedCoin.symbol}
           \nNetwork: ${addedCoin.network}
