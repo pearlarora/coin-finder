@@ -1,3 +1,4 @@
+import { sendEmail } from "../../Config/emailService.js";
 import CoinRepository from "./coin.repository.js";
 import { CoinTableModel } from "./coinTable.model.js";
 
@@ -69,6 +70,13 @@ export default class CoinController {
     try {
       const coinId = req.params.id;
       const addedCoin = await this.coinRepository.reviewAndAdd(coinId);
+      await sendEmail(
+        addedCoin.email,
+        "CoinFinder: Coin Added to Table",
+        `Your coin has been successfully added to the table. Details: ${JSON.stringify(
+          addedCoin
+        )}`
+      );
       res.status(201).json(addedCoin);
     } catch (error) {
       console.log(error);

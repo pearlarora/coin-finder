@@ -1,6 +1,6 @@
+import axios from "axios";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import axios from "axios";
 import fs from "fs";
 import cron from "node-cron";
 import {
@@ -11,7 +11,6 @@ import {
 dotenv.config();
 const url = process.env.DB_URL;
 
-// Create a migrate function if any field is required to be added in the schema
 const fetchDexscreenerData = async (query) => {
   try {
     const response = await axios.get(
@@ -26,12 +25,8 @@ const fetchDexscreenerData = async (query) => {
 
 const updateHours24ForAllCoins = async () => {
   try {
-    // Fetch all coins from CoinTableModel
     const coins = await CoinTableModel.find();
-    // Fetch all coins from PromotedCoinTableModel
     const promotedCoins = await PromotedCoinTableModel.find();
-
-    // Combine all coins into one array
     const allCoins = [...coins, ...promotedCoins];
 
     for (const coin of allCoins) {
@@ -70,32 +65,32 @@ const updateVotes = async () => {
   }
 };
 
-export const connectUsingMongoose = async () => {
+const runUpdates = async () => {
   try {
-    await mongoose.connect(url);
-    console.log("Connected using Mongoose");
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+
     await updateHours24ForAllCoins();
     await updateVotes();
-    // Call the migrate function here
-    // cron.schedule("0 */6 * * *", async () => {
-    //   // This cron job runs every 6 hours
-    //   await updateHours24ForAllCoins();
-    //   fs.appendFileSync(
-    //     "/Users/pearlarora/Pearl/Web Development/Projects/coin-finder/src/cron-log.txt",
-    //     `Cron job for hours24 ran at ${new Date().toISOString()}\n`
-    //   );
-    // });
 
-    // cron.schedule("0 */6 * * *", async () => {
-    //   // This cron job runs daily at midnight
-    //   await updateVotes();
-    //   fs.appendFileSync(
-    //     "/Users/pearlarora/Pearl/Web Development/Projects/coin-finder/src/cron-log.txt",
-    //     `Cron job for votes ran at ${new Date().toISOString()}\n`
-    //   );
-    // });
+    fs.appendFileSync(
+      "/Users/pearlarora/Pearl/Web Development/Projects/coin-finder/src/cron-log.txt",
+      `Cron job ran at ${new Date().toISOString()}\n`
+    );
   } catch (error) {
-    console.log("Error connecting to DB");
-    console.log(error);
+    console.error("Update failed", error);
+  } finally {
+    await mongoose.disconnect();
+    console.log("Disconnected from MongoDB");
   }
 };
+
+cron.schedule("*/2 * * * *", () => {
+  console.log("Running a task every 2 minutes");
+  runUpdates();
+});
+
+runUpdates(); 
