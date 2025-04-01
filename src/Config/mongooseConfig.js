@@ -61,7 +61,7 @@ const updateVotes = async () => {
     await CoinTableModel.updateMany({}, { $inc: { vote: 23 } });
     console.log("Updated votes in CoinTableModel");
 
-    await PromotedCoinTableModel.updateMany({}, { $inc: { vote: 23 } });
+    await PromotedCoinTableModel.updateMany({}, { $inc: { vote: 523 } });
     console.log("Updated votes in PromotedCoinTableModel");
   } catch (error) {
     console.error("Error updating votes for all coins:", error);
